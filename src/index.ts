@@ -2,7 +2,10 @@ import { InitializeControllers } from "./controllers";
 import express, { Express } from "express";
 import dotenv from "dotenv";
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
+
 const app: Express = express();
 
 const PORT = process.env.PORT || 3000;

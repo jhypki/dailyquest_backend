@@ -16,11 +16,25 @@ model User {
   passwordHash  String
   createdAt     DateTime       @default(now())
   tasks         Task[]
-  events        UserEvent[]
-  stats         UserStat[]
+  events        Event[]
+  stats         Stats          @relation(fields: [statsId], references: [id])
   achievements  Achievement[]
   notifications Notification[]
-  UserTask      UserTask[]
+  statsId       String
+}
+
+model Stats {
+  id               String   @id @default(uuid())
+  strength         Int      @default(0)
+  intelligence     Int      @default(0)
+  charisma         Int      @default(0)
+  dexterity        Int      @default(0)
+  endurance        Int      @default(0)
+  vitality         Int      @default(0)
+  experiencePoints Int      @default(0)
+  gold             Int      @default(0)
+  lastUpdated      DateTime @default(now())
+  User             User[]
 }
 
 model Task {
@@ -43,48 +57,31 @@ model Task {
   charismaReward     Int?
   enduranceReward    Int?
   dexterityReward    Int?
-  userTasks          UserTask[]
 }
 
 model Event {
-  id          String      @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   description String
   startDate   DateTime
   endDate     DateTime
   rewardGold  Int
   rewardExp   Int
-  users       UserEvent[]
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model Stat {
-  id               String     @id @default(uuid())
-  strength         Int        @default(0)
-  intelligence     Int        @default(0)
-  charisma         Int        @default(0)
-  dexterity        Int        @default(0)
-  endurance        Int        @default(0)
-  vitality         Int        @default(0)
-  experiencePoints Int        @default(0)
-  gold             Int        @default(0)
-  lastUpdated      DateTime   @default(now())
-  userStats        UserStat[]
-}
-
-model UserStat {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  stat   Stat   @relation(fields: [statId], references: [id])
-  statId String
-}
-
-model UserEvent {
-  id      String @id @default(uuid())
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String
-  event   Event  @relation(fields: [eventId], references: [id])
-  eventId String
+  id               String   @id @default(uuid())
+  strength         Int      @default(0)
+  intelligence     Int      @default(0)
+  charisma         Int      @default(0)
+  dexterity        Int      @default(0)
+  endurance        Int      @default(0)
+  vitality         Int      @default(0)
+  experiencePoints Int      @default(0)
+  gold             Int      @default(0)
+  lastUpdated      DateTime @default(now())
 }
 
 model Achievement {
@@ -107,14 +104,6 @@ model Notification {
   isRead           Boolean          @default(false)
   createdAt        DateTime
   notifyAt         DateTime
-}
-
-model UserTask {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  task   Task   @relation(fields: [taskId], references: [id])
-  taskId String
 }
 
 enum TaskStatus {
