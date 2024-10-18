@@ -1,16 +1,15 @@
 name: CI
 
-# Run the workflow when pushing to or pulling requests into the main branch
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,11 +35,34 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      # Step 6: Run tests
+  test:
+    runs-on: ubuntu-latest
+    needs: build # Ensure that the build job completes before running tests
+
+    steps:
+      # Step 1: Checkout the repository (required for each job)
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+
+      # Step 3: Install dependencies using npm
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Set up Prisma (optional, if you use migrations or Prisma Client)
+      - name: Set up Prisma
+        run: npx prisma generate
+
+      # Step 5: Run tests
       - name: Run tests
         run: npm run test
 
-      # Step 7: Upload test results (optional, if you want to track test results)
+      # Step 6: Upload test results (optional)
       - name: Archive test results
         if: always()
         uses: actions/upload-artifact@v3
