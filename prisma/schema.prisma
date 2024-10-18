@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Make sure to set your database URL in .env
+}
+
+model User {
+  id            String         @id @default(uuid())
+  username      String         @unique
+  firstName     String?
+  lastName      String?
+  email         String         @unique
+  passwordHash  String
+  createdAt     DateTime       @default(now())
+  tasks         Task[]
+  events        UserEvent[]
+  stats         UserStat[]
+  achievements  Achievement[]
+  notifications Notification[]
+  UserTask      UserTask[]
+}
+
+model Task {
+  id                 String     @id @default(uuid())
+  user               User       @relation(fields: [userId], references: [id])
+  userId             String
+  description        String
+  title              String
+  category           Category
+  negativeTask       Boolean    @default(false)
+  experiencePoints   Int        @default(0)
+  goldReward         Int        @default(0)
+  startDate          DateTime
+  dueDate            DateTime
+  createdAt          DateTime
+  status             TaskStatus
+  strengthReward     Int?
+  intelligenceReward Int?
+  vitalityReward     Int?
+  charismaReward     Int?
+  enduranceReward    Int?
+  dexterityReward    Int?
+  userTasks          UserTask[]
+}
+
+model Event {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  rewardGold  Int
+  rewardExp   Int
+  users       UserEvent[]
+}
+
+model Stat {
+  id               String     @id @default(uuid())
+  strength         Int        @default(0)
+  intelligence     Int        @default(0)
+  charisma         Int        @default(0)
+  dexterity        Int        @default(0)
+  endurance        Int        @default(0)
+  vitality         Int        @default(0)
+  experiencePoints Int        @default(0)
+  gold             Int        @default(0)
+  lastUpdated      DateTime   @default(now())
+  userStats        UserStat[]
+}
+
+model UserStat {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  stat   Stat   @relation(fields: [statId], references: [id])
+  statId String
+}
+
+model UserEvent {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  event   Event  @relation(fields: [eventId], references: [id])
+  eventId String
+}
+
+model Achievement {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  criteria    String
+  rewardExp   Int
+  rewardGold  Int
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model Notification {
+  id               String           @id @default(uuid())
+  user             User             @relation(fields: [userId], references: [id])
+  userId           String
+  message          String
+  notificationType NotificationType
+  isRead           Boolean          @default(false)
+  createdAt        DateTime
+  notifyAt         DateTime
+}
+
+model UserTask {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  task   Task   @relation(fields: [taskId], references: [id])
+  taskId String
+}
+
+enum TaskStatus {
+  pending
+  in_progress
+  completed
+  failed
+  cancelled
+}
+
+enum Category {
+  physical
+  mental
+  social
+  household
+  personal_development
+}
+
+enum NotificationType {
+  task_reminder
+  event_reminder
+  achievement_unlocked
+  level_increased
+}
