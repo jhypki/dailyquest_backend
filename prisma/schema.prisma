@@ -21,6 +21,7 @@ model User {
   achievements  Achievement[]
   notifications Notification[]
   statsId       String
+  picture       String?
 }
 
 model Stats {
@@ -65,23 +66,11 @@ model Event {
   description String
   startDate   DateTime
   endDate     DateTime
+  picture     String
   rewardGold  Int
   rewardExp   Int
   User        User?    @relation(fields: [userId], references: [id])
   userId      String?
-}
-
-model Stat {
-  id               String   @id @default(uuid())
-  strength         Int      @default(0)
-  intelligence     Int      @default(0)
-  charisma         Int      @default(0)
-  dexterity        Int      @default(0)
-  endurance        Int      @default(0)
-  vitality         Int      @default(0)
-  experiencePoints Int      @default(0)
-  gold             Int      @default(0)
-  lastUpdated      DateTime @default(now())
 }
 
 model Achievement {

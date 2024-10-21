@@ -4,22 +4,16 @@ import { UsersController } from "../../controllers/users-controller";
 
 describe("UsersController", () => {
   let app: Express;
-  beforeEach(() => {
+  let usersController: UsersController;
+
+  beforeAll(() => {
     app = express();
-    UsersController(app);
+    usersController = new UsersController();
+    app.get("/users", usersController.getUsers);
   });
 
-  test("should respond with 'Users route' on GET /users", async () => {
-    const res = await request(app).get("/users");
-
-    expect(res.statusCode).toBe(200); // Check for success response
-    expect(res.text).toBe("Users route"); // Check the response body
-  });
-
-  test("should respond with 'User created' on POST /users", async () => {
-    const res = await request(app).post("/users");
-
-    expect(res.statusCode).toBe(200); // Check for success response
-    expect(res.text).toBe("User created"); // Check the response body
+  it("should return 'Hello, world!'", async () => {
+    const response = await request(app).get("/users");
+    expect(response.text).toBe("Hello, world!");
   });
 });
