@@ -1,11 +1,9 @@
-import { UsersRepository } from "../../repositories/users-repository";
+import usersRepository from "../../repositories/users-repository";
 import prisma from "../../prisma/prisma";
 // import { User } from "@prisma/client";
 import { User } from "@prisma/client";
 
 describe("UsersRepository", () => {
-    let usersRepository: UsersRepository;
-
     const users: User[] = [
         {
             id: "1",
@@ -30,10 +28,6 @@ describe("UsersRepository", () => {
             picture: "picture",
         },
     ];
-
-    beforeAll(() => {
-        usersRepository = new UsersRepository();
-    });
 
     beforeEach(() => {
         jest.clearAllMocks();

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import prisma from "../prisma/prisma";
 import { User } from "@prisma/client";
 
-export class UsersRepository {
+class UsersRepository {
     private prisma: PrismaClient;
 
     constructor() {
@@ -50,3 +50,5 @@ export class UsersRepository {
         });
     }
 }
+
+export default new UsersRepository();

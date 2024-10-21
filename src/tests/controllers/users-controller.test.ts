@@ -1,19 +1,17 @@
 import express, { Request, Response, Express } from "express";
 import request from "supertest";
-import { UsersController } from "../../controllers/users-controller";
+import usersController from "../../controllers/users-controller";
 
 describe("UsersController", () => {
-  let app: Express;
-  let usersController: UsersController;
+    let app: Express;
 
-  beforeAll(() => {
-    app = express();
-    usersController = new UsersController();
-    app.get("/users", usersController.getUsers);
-  });
+    beforeAll(() => {
+        app = express();
+        app.get("/users", usersController.getAllUsers);
+    });
 
-  it("should return 'Hello, world!'", async () => {
-    const response = await request(app).get("/users");
-    expect(response.text).toBe("Hello, world!");
-  });
+    it("should return 'Hello, world!'", async () => {
+        const response = await request(app).get("/users");
+        expect(response.text).toBe("Hello, world!");
+    });
 });
