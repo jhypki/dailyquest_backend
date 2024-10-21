@@ -31,16 +31,17 @@ describe("UsersRepository", () => {
         },
     ];
 
-    prisma.user.findMany = jest.fn().mockResolvedValue(users);
-    prisma.user.findUnique = jest.fn().mockResolvedValue(users[0]);
-    prisma.user.create = jest.fn().mockResolvedValue(users[0]);
-    prisma.user.update = jest.fn().mockResolvedValue(users[0]);
-    prisma.user.delete = jest.fn().mockResolvedValue(users[0]);
-    prisma.user.findUnique = jest.fn().mockResolvedValue(users[0]);
-    prisma.user.findFirst = jest.fn().mockResolvedValue(users[0]);
-
     beforeAll(() => {
         usersRepository = new UsersRepository();
+    });
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        prisma.user.findMany = jest.fn().mockResolvedValue(users);
+        prisma.user.findUnique = jest.fn().mockResolvedValue(users[0]);
+        prisma.user.create = jest.fn().mockResolvedValue(users[0]);
+        prisma.user.update = jest.fn().mockResolvedValue(users[0]);
+        prisma.user.delete = jest.fn().mockResolvedValue(users[0]);
     });
 
     describe("getUsers", () => {
@@ -54,7 +55,7 @@ describe("UsersRepository", () => {
 
         it("should return empty array if no users are found", async () => {
             // Arrange
-            prisma.user.findMany = jest.fn().mockResolvedValue([]);
+            prisma.user.findMany = jest.fn().mockResolvedValueOnce([]);
 
             // Act
             const result = await usersRepository.getUsers();
@@ -75,7 +76,7 @@ describe("UsersRepository", () => {
 
         it("should return null if no user is found", async () => {
             // Arrange
-            prisma.user.findUnique = jest.fn().mockResolvedValue(null);
+            prisma.user.findUnique = jest.fn().mockResolvedValueOnce(null);
 
             // Act
             const result = await usersRepository.findById("3");
@@ -96,7 +97,7 @@ describe("UsersRepository", () => {
 
         it("should return null if no user is created", async () => {
             // Arrange
-            prisma.user.create = jest.fn().mockResolvedValue(null);
+            prisma.user.create = jest.fn().mockResolvedValueOnce(null);
 
             // Act
             const result = await usersRepository.create(users[0]);
@@ -117,7 +118,7 @@ describe("UsersRepository", () => {
 
         it("should return null if no user is updated", async () => {
             // Arrange
-            prisma.user.update = jest.fn().mockResolvedValue(null);
+            prisma.user.update = jest.fn().mockResolvedValueOnce(null);
 
             // Act
             const result = await usersRepository.update("1", users[0]);
@@ -138,7 +139,7 @@ describe("UsersRepository", () => {
 
         it("should return null if no user is deleted", async () => {
             // Arrange
-            prisma.user.delete = jest.fn().mockResolvedValue(null);
+            prisma.user.delete = jest.fn().mockResolvedValueOnce(null);
 
             // Act
             const result = await usersRepository.delete("1");
@@ -159,7 +160,7 @@ describe("UsersRepository", () => {
 
         it("should return null if no user is found", async () => {
             // Arrange
-            prisma.user.findUnique = jest.fn().mockResolvedValue(null);
+            prisma.user.findUnique = jest.fn().mockResolvedValueOnce(null);
 
             // Act
             const result = await usersRepository.findByUsername("user3");
@@ -180,7 +181,7 @@ describe("UsersRepository", () => {
 
         it("should return null if no user is found", async () => {
             // Arrange
-            prisma.user.findUnique = jest.fn().mockResolvedValue(null);
+            prisma.user.findUnique = jest.fn().mockResolvedValueOnce(null);
 
             // Act
             const result = await usersRepository.findByEmail("email@email.com");
