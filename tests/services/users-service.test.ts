@@ -1,10 +1,10 @@
-import usersService from '../../services/users-service';
-import { AuthenticateResponse } from '../../types/authenticate-response';
-import usersRepository from '../../repositories/users-repository';
+import usersService from '../../src/services/users-service';
+import { AuthenticateResponse } from '../../src/types/authenticate-response';
+import usersRepository from '../../src/repositories/users-repository';
 import { User } from '@prisma/client';
-import * as generateToken from '../../utils/authentication-utils/generate-token';
-import * as hashPassword from '../../utils/authentication-utils/hash-password';
-import * as verifyPassword from '../../utils/authentication-utils/verify-password';
+import * as generateToken from '../../src/utils/authentication-utils/generate-token';
+import * as hashPassword from '../../src/utils/authentication-utils/hash-password';
+import * as verifyPassword from '../../src/utils/authentication-utils/verify-password';
 
 describe('Users Service', () => {
     let correctRegisterResponse: AuthenticateResponse;
