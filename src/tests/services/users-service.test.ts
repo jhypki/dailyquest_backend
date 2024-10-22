@@ -36,6 +36,7 @@ describe('Users Service', () => {
 
         usersRepository.create = jest.fn().mockResolvedValue(user);
         usersRepository.findByEmail = jest.fn().mockResolvedValue(null);
+        usersRepository.findByUsername = jest.fn().mockResolvedValue(null);
 
         correctRegisterResponse = {
             token: 'token',
