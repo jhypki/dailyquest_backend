@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-import prisma from "../prisma/prisma";
-import { User } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/prisma';
+import { User } from '@prisma/client';
 
 class UsersRepository {
     private prisma: PrismaClient;
@@ -15,38 +15,38 @@ class UsersRepository {
 
     async findById(userId: string): Promise<User | null> {
         return this.prisma.user.findUnique({
-            where: { id: userId },
+            where: { id: userId }
         });
     }
 
-    async create(user: User): Promise<User> {
+    async create(user: Omit<User, 'id'>): Promise<User> {
         return prisma.user.create({
-            data: user,
+            data: user
         });
     }
 
     async update(userId: string, user: User): Promise<User> {
         return prisma.user.update({
             where: { id: userId },
-            data: user,
+            data: user
         });
     }
 
     async delete(userId: string): Promise<User> {
         return prisma.user.delete({
-            where: { id: userId },
+            where: { id: userId }
         });
     }
 
     async findByUsername(username: string): Promise<User | null> {
         return prisma.user.findUnique({
-            where: { username },
+            where: { username }
         });
     }
 
     async findByEmail(email: string): Promise<User | null> {
         return prisma.user.findUnique({
-            where: { email },
+            where: { email }
         });
     }
 }
