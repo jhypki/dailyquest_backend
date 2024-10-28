@@ -7,24 +7,10 @@ import { ConflictError } from '../utils/errors/conflict-error';
 import { hashPassword } from '../utils/authentication-utils/hash-password';
 import { generateToken } from '../utils/authentication-utils/generate-token';
 import { verifyPassword } from '../utils/authentication-utils/verify-password';
+import { validateLoginData } from '../utils/validations/validate-login-data';
+import { validateRegisterData } from '../utils/validations/validate-register-data';
 
 class UsersService {
-    private registerSchema = Yup.object().shape({
-        username: Yup.string().required('Username is required'),
-        email: Yup.string().email('Invalid email format').required('Email is required'),
-        password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters long')
-    });
-
-    private loginSchema = Yup.object()
-        .shape({
-            username: Yup.string(),
-            email: Yup.string().email('Invalid email format'),
-            password: Yup.string().required('Password is required')
-        })
-        .test('at-least-one', 'Either email or username is required', function (value) {
-            return !!(value.username || value.email);
-        });
-
     async getUsers(): Promise<User[] | null> {
         return await usersRepository.getUsers();
     }
@@ -34,7 +20,7 @@ class UsersService {
     }
 
     async register(username: string, email: string, password: string): Promise<AuthenticateResponse> {
-        await this.validateRegistrationData(username, email, password);
+        await validateRegisterData(username, email, password);
 
         const existingUserByEmail = await usersRepository.findByEmail(email);
 
@@ -82,7 +68,7 @@ class UsersService {
         email: string | undefined,
         password: string
     ): Promise<AuthenticateResponse> {
-        await this.validateLoginData(username, email, password);
+        await validateLoginData(username, email, password);
 
         const user = email
             ? await usersRepository.findByEmail(email)
@@ -123,38 +109,6 @@ class UsersService {
 
     async getUserByEmail(email: string): Promise<User | null> {
         return await usersRepository.findByEmail(email);
-    }
-
-    private async validateRegistrationData(username: string, email: string, password: string): Promise<void> {
-        try {
-            await this.registerSchema.validate({ username, email, password }, { abortEarly: false });
-        } catch (validationError) {
-            if (validationError instanceof Yup.ValidationError) {
-                const errors = validationError.inner.map((err) => ({
-                    field: err.path,
-                    message: err.message
-                }));
-                throw new BadRequestError('Invalid user data', errors);
-            }
-        }
-    }
-
-    private async validateLoginData(
-        username: string | undefined,
-        email: string | undefined,
-        password: string
-    ): Promise<void> {
-        try {
-            await this.loginSchema.validate({ username, email, password }, { abortEarly: false });
-        } catch (validationError) {
-            if (validationError instanceof Yup.ValidationError) {
-                const errors = validationError.inner.map((err) => ({
-                    field: err.path,
-                    message: err.message
-                }));
-                throw new BadRequestError('Invalid login data', errors);
-            }
-        }
     }
 }
 
