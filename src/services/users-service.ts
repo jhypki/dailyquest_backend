@@ -34,17 +34,7 @@ class UsersService {
     }
 
     async register(username: string, email: string, password: string): Promise<AuthenticateResponse> {
-        try {
-            await this.registerSchema.validate({ username, email, password }, { abortEarly: false });
-        } catch (validationError) {
-            if (validationError instanceof Yup.ValidationError) {
-                const errors = validationError.inner.map((err) => ({
-                    field: err.path,
-                    message: err.message
-                }));
-                throw new BadRequestError('Invalid user data', errors);
-            }
-        }
+        await this.validateRegistrationData(username, email, password);
 
         const existingUserByEmail = await usersRepository.findByEmail(email);
 
@@ -92,17 +82,7 @@ class UsersService {
         email: string | undefined,
         password: string
     ): Promise<AuthenticateResponse> {
-        try {
-            await this.loginSchema.validate({ username, email, password }, { abortEarly: false });
-        } catch (validationError) {
-            if (validationError instanceof Yup.ValidationError) {
-                const errors = validationError.inner.map((err) => ({
-                    field: err.path,
-                    message: err.message
-                }));
-                throw new BadRequestError('Invalid login data', errors);
-            }
-        }
+        await this.validateLoginData(username, email, password);
 
         const user = email
             ? await usersRepository.findByEmail(email)
@@ -143,6 +123,38 @@ class UsersService {
 
     async getUserByEmail(email: string): Promise<User | null> {
         return await usersRepository.findByEmail(email);
+    }
+
+    private async validateRegistrationData(username: string, email: string, password: string): Promise<void> {
+        try {
+            await this.registerSchema.validate({ username, email, password }, { abortEarly: false });
+        } catch (validationError) {
+            if (validationError instanceof Yup.ValidationError) {
+                const errors = validationError.inner.map((err) => ({
+                    field: err.path,
+                    message: err.message
+                }));
+                throw new BadRequestError('Invalid user data', errors);
+            }
+        }
+    }
+
+    private async validateLoginData(
+        username: string | undefined,
+        email: string | undefined,
+        password: string
+    ): Promise<void> {
+        try {
+            await this.loginSchema.validate({ username, email, password }, { abortEarly: false });
+        } catch (validationError) {
+            if (validationError instanceof Yup.ValidationError) {
+                const errors = validationError.inner.map((err) => ({
+                    field: err.path,
+                    message: err.message
+                }));
+                throw new BadRequestError('Invalid login data', errors);
+            }
+        }
     }
 }
 

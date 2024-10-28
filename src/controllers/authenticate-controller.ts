@@ -16,6 +16,8 @@ export class AuthenticateController {
 
     async login(req: Request, res: Response, next: NextFunction) {
         try {
+            //TODO handle situation where there is one field in login form for both username and email
+            // const { usernameOrEmail, password } = req.body;
             const { username, email, password } = req.body;
 
             const user = await usersService.login(username, email, password);
