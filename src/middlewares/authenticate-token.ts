@@ -5,8 +5,7 @@ import { BasicUserData } from '../types/basic-user-data';
 import { BadRequestError } from '../utils/errors/bad-request-error';
 import { unless } from 'express-unless';
 import { UnauthorizedError } from '../utils/errors/unauthorized-error';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+import { JWT_SECRET } from '../config/constants';
 
 const authenticateToken = (req: CustomRequest, res: Response, next: NextFunction): void => {
     const authHeader = req.headers['authorization'];

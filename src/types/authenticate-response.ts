@@ -1,8 +1,6 @@
+import { UserResponseData } from './user-response-data';
+
 export interface AuthenticateResponse {
     token: string;
-    user: {
-        id: string;
-        username: string;
-        email: string;
-    };
+    user: UserResponseData;
 }

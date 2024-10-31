@@ -8,14 +8,28 @@ import { generateToken } from '../utils/authentication-utils/jwt-utils';
 import { verifyPassword } from '../utils/authentication-utils/verify-password';
 import { validateLoginData } from '../utils/validations/validate-login-data';
 import { validateRegisterData } from '../utils/validations/validate-register-data';
+import { ForbiddenError } from '../utils/errors/forbidden-error';
+import { UpdateUserRequest } from '../types/update-user-request';
+import { validateUpdateUserData } from '../utils/validations/validate-update-user-data';
+import { BasicUserData } from '../types/basic-user-data';
+import { mapUserResponse } from '../mappers/map-user-response';
+import { UserResponseData } from '../types/user-response-data';
 
 class UsersService {
-    async getUsers(): Promise<User[] | null> {
-        return await usersRepository.getUsers();
+    async getUsers(): Promise<UserResponseData[] | null> {
+        const users = await usersRepository.getUsers();
+
+        return users ? users.map(mapUserResponse) : null;
     }
 
-    async getUserById(userId: string): Promise<User | null> {
-        return await usersRepository.findById(userId);
+    async getUserById(userId: string): Promise<UserResponseData | null> {
+        const user = await usersRepository.findById(userId);
+
+        if (!user) {
+            throw new BadRequestError('User not found');
+        }
+
+        return mapUserResponse(user);
     }
 
     async register(username: string, email: string, password: string): Promise<AuthenticateResponse> {
@@ -53,11 +67,7 @@ class UsersService {
 
         const token = generateToken(newUser);
 
-        const userData = {
-            id: newUser.id,
-            username: newUser.username,
-            email: newUser.email
-        };
+        const userData: UserResponseData = mapUserResponse(newUser);
 
         return { token, user: userData };
     }
@@ -85,17 +95,61 @@ class UsersService {
 
         const token = generateToken(user);
 
-        const userData = {
-            id: user.id,
-            username: user.username,
-            email: user.email
-        };
+        const userData: UserResponseData = mapUserResponse(user);
 
         return { token, user: userData };
     }
 
-    async updateUser(userId: string, user: User): Promise<User> {
-        return await usersRepository.update(userId, user);
+    async updateUser(
+        idFromToken: string | undefined,
+        userId: string,
+        dataToUpdate: UpdateUserRequest
+    ): Promise<UserResponseData> {
+        const userToUpdate = await usersRepository.findById(userId);
+
+        if (!userToUpdate) {
+            throw new BadRequestError('User not found');
+        }
+
+        if (idFromToken !== userId) {
+            throw new ForbiddenError('You are not authorized to update this user');
+        }
+
+        await validateUpdateUserData(dataToUpdate);
+
+        if (dataToUpdate.email) {
+            const existingUserByEmail = await usersRepository.findByEmail(dataToUpdate.email);
+
+            if (existingUserByEmail && existingUserByEmail.id !== userId) {
+                throw new ConflictError('User with that email already exists', [
+                    { field: 'email', message: 'Email is already in use' }
+                ]);
+            }
+        }
+
+        if (dataToUpdate.username) {
+            const existingUserByUsername = await usersRepository.findByUsername(dataToUpdate.username);
+
+            if (existingUserByUsername && existingUserByUsername.id !== userId) {
+                throw new ConflictError('User with that username already exists', [
+                    { field: 'username', message: 'Username is already in use' }
+                ]);
+            }
+        }
+
+        if (dataToUpdate.password) {
+            userToUpdate.passwordHash = await hashPassword(dataToUpdate.password);
+        }
+
+        delete dataToUpdate.password;
+
+        const updatedUserData: User = { ...userToUpdate, ...dataToUpdate };
+
+        console.log(updatedUserData);
+
+        const updatedUser = await usersRepository.update(userId, updatedUserData);
+
+        return mapUserResponse(updatedUser);
     }
 
     async deleteUser(userId: string): Promise<User> {

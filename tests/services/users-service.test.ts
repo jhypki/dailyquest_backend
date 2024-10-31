@@ -43,7 +43,11 @@ describe('Users Service', () => {
             user: {
                 id: '1',
                 username: 'test',
-                email: 'test@test.com'
+                email: 'test@test.com',
+                picture: null,
+                firstName: null,
+                lastName: null,
+                createdAt: user.createdAt.toISOString()
             }
         };
 
@@ -52,7 +56,11 @@ describe('Users Service', () => {
             user: {
                 id: '1',
                 username: 'test',
-                email: 'test@test.com'
+                email: 'test@test.com',
+                picture: null,
+                firstName: null,
+                lastName: null,
+                createdAt: user.createdAt.toISOString()
             }
         };
 

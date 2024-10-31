@@ -1,5 +1,5 @@
 import { authenticateRoutes } from './routes/authenticate-routes';
-import express, { Express } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { usersRoutes } from './routes';
 import errorHandler from './middlewares/error-handler';
@@ -40,6 +40,10 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong');
+});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

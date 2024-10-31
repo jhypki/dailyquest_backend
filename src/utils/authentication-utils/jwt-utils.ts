@@ -1,16 +1,16 @@
 import jwt from 'jsonwebtoken';
 import { User } from '@prisma/client';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+import { BasicUserData } from '../../types/basic-user-data';
+import { JWT_EXPIRATION, JWT_SECRET } from '../../config/constants';
 
 export function generateToken(user: User) {
-    const payload = {
+    const payload: BasicUserData = {
         id: user.id,
         username: user.username,
         email: user.email
     };
 
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '30d' });
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
     return token;
 }
 
