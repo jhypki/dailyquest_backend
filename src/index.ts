@@ -1,9 +1,10 @@
 import { authenticateRoutes } from './routes/authenticate-routes';
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
-import { userRoutes } from './routes';
+import { usersRoutes } from './routes';
 import errorHandler from './middlewares/error-handler';
 import logger from './middlewares/logger';
+import authenticateToken from './middlewares/authenticate-token';
 
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
@@ -14,9 +15,20 @@ const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+
 app.use(logger);
 
-app.use('/users', userRoutes);
+app.use(
+    authenticateToken.unless({
+        path: [
+            { url: '/authenticate', methods: ['GET', 'POST'] },
+            { url: '/authenticate/login', methods: ['POST'] },
+            { url: '/authenticate/register', methods: ['POST'] }
+        ]
+    })
+);
+
+app.use('/users', usersRoutes);
 app.use('/authenticate', authenticateRoutes);
 
 app.use((req, res, next) => {

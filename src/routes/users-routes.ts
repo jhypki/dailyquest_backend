@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import usersController from '../controllers/users-controller';
 
-export const userRoutes = Router();
+export const usersRoutes = Router();
 
-userRoutes.get('/', usersController.getAllUsers);
-userRoutes.get('/:id', usersController.getUserById);
+usersRoutes.get('/', usersController.getAllUsers);
+usersRoutes.get('/:id', usersController.getUserById);

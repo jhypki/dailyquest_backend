@@ -1,11 +1,10 @@
-import { AuthenticateResponse } from './../types/authenticate-response';
 import usersRepository from '../repositories/users-repository';
+import { AuthenticateResponse } from './../types/authenticate-response';
 import { User } from '@prisma/client';
 import { BadRequestError } from '../utils/errors/bad-request-error';
-import * as Yup from 'yup';
 import { ConflictError } from '../utils/errors/conflict-error';
 import { hashPassword } from '../utils/authentication-utils/hash-password';
-import { generateToken } from '../utils/authentication-utils/generate-token';
+import { generateToken } from '../utils/authentication-utils/jwt-utils';
 import { verifyPassword } from '../utils/authentication-utils/verify-password';
 import { validateLoginData } from '../utils/validations/validate-login-data';
 import { validateRegisterData } from '../utils/validations/validate-register-data';

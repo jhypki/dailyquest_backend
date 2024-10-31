@@ -11,6 +11,7 @@ const loginSchema = Yup.object()
         return !!(value.username || value.email);
     });
 
+//TODO move validation unit tests to separate file from service tests
 export const validateLoginData = async (
     username: string | undefined,
     email: string | undefined,
