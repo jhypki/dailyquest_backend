@@ -31,19 +31,16 @@ app.use(
 app.use('/users', usersRoutes);
 app.use('/authenticate', authenticateRoutes);
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({
         message: 'Not Found',
         statusCode: 404
     });
+    next();
 });
 
 app.use(errorHandler);
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong');
-});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

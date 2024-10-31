@@ -11,12 +11,12 @@ const requestLogger = (req: Request, res: Response, next: NextFunction) => {
     const originalJson = res.json;
     const originalSend = res.send;
 
-    res.json = function (body: any) {
+    res.json = function (body: unknown) {
         res.locals.data = body;
         return originalJson.call(this, body);
     };
 
-    res.send = function (body: any) {
+    res.send = function (body: unknown) {
         res.locals.data = body;
         return originalSend.call(this, body);
     };

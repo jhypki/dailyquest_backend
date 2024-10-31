@@ -34,7 +34,11 @@ describe('Authenticate Controller', () => {
             user: {
                 id: '1',
                 username: 'test',
-                email: 'test@test.com'
+                email: 'test@test.com',
+                picture: 'picture',
+                firstName: 'first',
+                lastName: 'last',
+                createdAt: '2021-01-01T00:00:00.000Z'
             }
         };
 
@@ -43,7 +47,11 @@ describe('Authenticate Controller', () => {
             user: {
                 id: '1',
                 username: 'test',
-                email: 'test@test.com'
+                email: 'test@test.com',
+                picture: 'picture',
+                firstName: 'first',
+                lastName: 'last',
+                createdAt: '2021-01-01T00:00:00.000Z'
             }
         };
 

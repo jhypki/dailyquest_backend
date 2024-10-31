@@ -1,8 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { CustomRequest } from '../types/custom-request';
 import { BasicUserData } from '../types/basic-user-data';
-import { BadRequestError } from '../utils/errors/bad-request-error';
 import { unless } from 'express-unless';
 import { UnauthorizedError } from '../utils/errors/unauthorized-error';
 import { JWT_SECRET } from '../config/constants';
@@ -22,6 +21,7 @@ const authenticateToken = (req: CustomRequest, res: Response, next: NextFunction
         req.user = decoded as BasicUserData;
         console.log('User authenticated:', req.user);
         next();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
         return next(new UnauthorizedError('Invalid authorization token'));
     }

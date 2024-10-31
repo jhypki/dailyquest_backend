@@ -1,12 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { CustomError } from '../utils/errors/custom-error';
 
-const errorHandler = (
-    err: CustomError | Error,
-    req: Request,
-    res: Response,
-    next: NextFunction
-): void => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const errorHandler = (err: CustomError | Error, req: Request, res: Response, next: NextFunction): void => {
     if (err instanceof CustomError) {
         res.status(err.statusCode).json(err.serializeErrors());
         return;

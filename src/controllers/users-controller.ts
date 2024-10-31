@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import usersService from '../services/users-service';
 import { CustomRequest } from '../types/custom-request';
-import { UpdateUserRequest } from '../types/update-user-request';
 import { mapUserUpdateRequest } from '../mappers/map-user-update-request';
 
 export class UsersController {

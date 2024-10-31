@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import { BasicUserData } from './basic-user-data';
 import { Request } from 'express';
 

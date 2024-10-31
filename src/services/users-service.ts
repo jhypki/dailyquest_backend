@@ -11,7 +11,6 @@ import { validateRegisterData } from '../utils/validations/validate-register-dat
 import { ForbiddenError } from '../utils/errors/forbidden-error';
 import { UpdateUserRequest } from '../types/update-user-request';
 import { validateUpdateUserData } from '../utils/validations/validate-update-user-data';
-import { BasicUserData } from '../types/basic-user-data';
 import { mapUserResponse } from '../mappers/map-user-response';
 import { UserResponseData } from '../types/user-response-data';
 
