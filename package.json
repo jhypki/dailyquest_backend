@@ -8,7 +8,7 @@
     "start": "node dist/index.js",
     "test": "jest",
     "nodemon": "nodemon src/index.ts",
-    "eslint": "eslint ."
+    "lint": "eslint ."
   },
   "dependencies": {
     "@prisma/client": "^5.21.1",
