@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import usersService from '../services/users-service';
 import { CustomRequest } from '../types/custom-request';
 import { mapUserUpdateRequest } from '../mappers/map-user-update-request';
+import statsService from '../services/stats-service';
 
 export class UsersController {
     async getAllUsers(req: Request, res: Response, next: NextFunction) {
@@ -37,6 +38,15 @@ export class UsersController {
         try {
             await usersService.deleteUser(req.user?.id, req.params.id);
             res.status(204).send();
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getUserStatsById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const stats = await statsService.getStatsByUserId(req.params.id);
+            res.status(200).json(stats);
         } catch (error) {
             next(error);
         }

@@ -16,8 +16,7 @@ describe('JWT Utils', () => {
             picture: 'picture',
             firstName: 'first',
             lastName: 'last',
-            createdAt: new Date(),
-            statsId: 'statsId'
+            createdAt: new Date()
         };
 
         signMock = jest.spyOn(jwt, 'sign').mockImplementation(() => 'token');

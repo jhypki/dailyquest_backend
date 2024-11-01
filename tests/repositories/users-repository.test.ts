@@ -10,7 +10,6 @@ describe('UsersRepository', () => {
             email: 'email@email.com',
             passwordHash: 'password',
             createdAt: new Date(),
-            statsId: '1',
             firstName: 'First',
             lastName: 'Last',
             picture: 'picture'
@@ -21,7 +20,6 @@ describe('UsersRepository', () => {
             email: 'email2@email.com',
             passwordHash: 'password',
             createdAt: new Date(),
-            statsId: '2',
             firstName: 'First',
             lastName: 'Last',
             picture: 'picture'

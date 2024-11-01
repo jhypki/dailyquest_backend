@@ -1,7 +1,7 @@
 import { authenticateRoutes } from './routes/authenticate-routes';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { usersRoutes } from './routes';
+import { usersRoutes } from './routes/users-routes';
 import errorHandler from './middlewares/error-handler';
 import logger from './middlewares/logger';
 import authenticateToken from './middlewares/authenticate-token';

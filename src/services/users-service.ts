@@ -13,6 +13,7 @@ import { UpdateUserRequest } from '../types/update-user-request';
 import { validateUpdateUserData } from '../utils/validations/validate-update-user-data';
 import { mapUserResponse } from '../mappers/map-user-response';
 import { UserResponseData } from '../types/user-response-data';
+import statsService from './stats-service';
 
 class UsersService {
     async getUsers(): Promise<UserResponseData[] | null> {
@@ -59,10 +60,10 @@ class UsersService {
             lastName: null,
             picture: null,
             passwordHash: hashedPassword,
-            createdAt: new Date(),
-            // TODO: new stats row should be created here and statsId should be set to the id of the new row
-            statsId: '1'
+            createdAt: new Date()
         });
+
+        await statsService.createStats(newUser.id);
 
         const token = generateToken(newUser);
 
@@ -144,14 +145,17 @@ class UsersService {
 
         const updatedUserData: User = { ...userToUpdate, ...dataToUpdate };
 
-        console.log(updatedUserData);
-
         const updatedUser = await usersRepository.update(userId, updatedUserData);
 
         return mapUserResponse(updatedUser);
     }
 
     async deleteUser(userId: string | undefined, idToDelete: string): Promise<User> {
+        if (!usersRepository.findById(idToDelete)) {
+            throw new BadRequestError('User not found');
+        }
+
+        //TODO move this to a middleware
         if (userId !== idToDelete) {
             throw new ForbiddenError('You are not authorized to delete this user');
         }

@@ -17,15 +17,15 @@ model User {
   createdAt     DateTime       @default(now())
   tasks         Task[]
   events        Event[]
-  stats         Stats          @relation(fields: [statsId], references: [id])
+  stats         Stats?
   achievements  Achievement[]
   notifications Notification[]
-  statsId       String
   picture       String?
 }
 
 model Stats {
   id               String   @id @default(uuid())
+  user             User     @relation(fields: [userId], references: [id])
   strength         Int      @default(0)
   intelligence     Int      @default(0)
   charisma         Int      @default(0)
@@ -35,7 +35,7 @@ model Stats {
   experiencePoints Int      @default(0)
   gold             Int      @default(0)
   lastUpdated      DateTime @default(now())
-  User             User[]
+  userId           String   @unique // Ensure that each Stats entry is associated with only one User
 }
 
 model Task {

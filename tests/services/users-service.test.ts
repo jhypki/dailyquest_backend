@@ -1,10 +1,11 @@
 import usersService from '../../src/services/users-service';
 import { AuthenticateResponse } from '../../src/types/authenticate-response';
 import usersRepository from '../../src/repositories/users-repository';
-import { User } from '@prisma/client';
+import { Stats, User } from '@prisma/client';
 import * as generateToken from '../../src/utils/authentication-utils/jwt-utils';
 import * as hashPassword from '../../src/utils/authentication-utils/hash-password';
 import * as verifyPassword from '../../src/utils/authentication-utils/verify-password';
+import statsService from '../../src/services/stats-service';
 
 describe('Users Service', () => {
     let correctRegisterResponse: AuthenticateResponse;
@@ -14,6 +15,7 @@ describe('Users Service', () => {
     let hashPasswordMock: jest.SpyInstance;
     let verifyPasswordMock: jest.SpyInstance;
     let generateTokenMock: jest.SpyInstance;
+    let createStatsMock: jest.SpyInstance;
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -24,7 +26,6 @@ describe('Users Service', () => {
             email: 'test@test.com',
             passwordHash: 'password',
             createdAt: new Date(),
-            statsId: '1',
             picture: null,
             firstName: null,
             lastName: null
@@ -67,6 +68,7 @@ describe('Users Service', () => {
         generateTokenMock = jest.spyOn(generateToken, 'generateToken').mockReturnValue('token');
         verifyPasswordMock = jest.spyOn(verifyPassword, 'verifyPassword').mockResolvedValue(true);
         hashPasswordMock = jest.spyOn(hashPassword, 'hashPassword').mockResolvedValue('password');
+        createStatsMock = jest.spyOn(statsService, 'createStats').mockResolvedValue({} as Stats);
     });
 
     describe('register', () => {
@@ -137,8 +139,7 @@ describe('Users Service', () => {
                 lastName: null,
                 picture: null,
                 passwordHash: 'password',
-                createdAt: expect.any(Date),
-                statsId: '1'
+                createdAt: expect.any(Date)
             });
         });
 

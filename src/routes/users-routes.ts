@@ -7,3 +7,5 @@ usersRoutes.get('/', usersController.getAllUsers);
 usersRoutes.get('/:id', usersController.getUserById);
 usersRoutes.put('/:id', usersController.updateUser);
 usersRoutes.delete('/:id', usersController.deleteUser);
+
+usersRoutes.get('/:id/stats', usersController.getUserStatsById);
