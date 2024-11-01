@@ -51,6 +51,15 @@ export class UsersController {
             next(error);
         }
     }
+
+    async updateUserStats(req: Request, res: Response, next: NextFunction) {
+        try {
+            const stats = await statsService.updateStats(req.params.id, req.body);
+            res.status(200).json(stats);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new UsersController();

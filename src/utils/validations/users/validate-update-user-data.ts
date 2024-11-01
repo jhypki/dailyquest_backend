@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import { BadRequestError } from '../errors/bad-request-error';
-import { UpdateUserRequest } from '../../types/update-user-request';
+import { BadRequestError } from '../../errors/bad-request-error';
+import { UpdateUserRequest } from '../../../types/update-user-request';
 
 const updateUserSchema = Yup.object()
     .shape({

@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { BadRequestError } from '../errors/bad-request-error';
+import { BadRequestError } from '../../errors/bad-request-error';
 
 const loginSchema = Yup.object()
     .shape({

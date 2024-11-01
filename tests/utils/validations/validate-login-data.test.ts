@@ -1,5 +1,5 @@
 import { BadRequestError } from '../../../src/utils/errors/bad-request-error';
-import { validateLoginData } from './../../../src/utils/validations/validate-login-data';
+import { validateLoginData } from '../../../src/utils/validations/users/validate-login-data';
 
 describe('validateLoginData', () => {
     let username: string | undefined;

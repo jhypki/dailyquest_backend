@@ -28,9 +28,16 @@ class StatsRepository {
         });
     }
 
-    findByUserId(userId: string): Promise<Stats | null> {
+    async findByUserId(userId: string): Promise<Stats | null> {
         return this.prisma.stats.findFirst({
             where: { userId }
+        });
+    }
+
+    async updateByUserId(userId: string, stats: Stats): Promise<Stats> {
+        return prisma.stats.update({
+            where: { userId },
+            data: stats
         });
     }
 }

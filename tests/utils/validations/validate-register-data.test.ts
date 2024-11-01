@@ -1,4 +1,4 @@
-import { validateRegisterData } from '../../../src/utils/validations/validate-register-data';
+import { validateRegisterData } from '../../../src/utils/validations/users/validate-register-data';
 import { BadRequestError } from '../../../src/utils/errors/bad-request-error';
 
 describe('validateRegisterData', () => {
