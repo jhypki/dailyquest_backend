@@ -19,7 +19,6 @@ const authenticateToken = (req: CustomRequest, res: Response, next: NextFunction
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded as BasicUserData;
-        console.log('User authenticated:', req.user);
         next();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {

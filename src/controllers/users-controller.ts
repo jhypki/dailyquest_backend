@@ -32,6 +32,15 @@ export class UsersController {
             next(error);
         }
     }
+
+    async deleteUser(req: CustomRequest, res: Response, next: NextFunction) {
+        try {
+            await usersService.deleteUser(req.user?.id, req.params.id);
+            res.status(204).send();
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new UsersController();

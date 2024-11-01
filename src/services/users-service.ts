@@ -151,16 +151,11 @@ class UsersService {
         return mapUserResponse(updatedUser);
     }
 
-    async deleteUser(userId: string): Promise<User> {
+    async deleteUser(userId: string | undefined, idToDelete: string): Promise<User> {
+        if (userId !== idToDelete) {
+            throw new ForbiddenError('You are not authorized to delete this user');
+        }
         return await usersRepository.delete(userId);
-    }
-
-    async getUserByUsername(username: string): Promise<User | null> {
-        return await usersRepository.findByUsername(username);
-    }
-
-    async getUserByEmail(email: string): Promise<User | null> {
-        return await usersRepository.findByEmail(email);
     }
 }
 
