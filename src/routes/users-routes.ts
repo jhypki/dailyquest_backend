@@ -9,4 +9,3 @@ usersRoutes.put('/:id', usersController.updateUser);
 usersRoutes.delete('/:id', usersController.deleteUser);
 
 usersRoutes.get('/:id/stats', usersController.getUserStatsById);
-usersRoutes.put('/:id/stats', usersController.updateUserStats);

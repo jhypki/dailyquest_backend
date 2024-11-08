@@ -1,0 +1,316 @@
+openapi: '3.0.3'
+info:
+  title: DailyQuest
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+
+paths:
+  /authenticate/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      operationId: registerUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUserResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
+  /authenticate/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login a user
+      operationId: loginUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+      responses:
+        '200':
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginUserResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationErrorResponse'
+    
+  /users:
+      get:
+        tags:
+          - Users
+        summary: Get all users
+        operationId: getUsers
+        security:
+          - bearerAuth: []
+        responses:
+          '200':
+            description: Users retrieved successfully
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UserResponseData'
+          '401':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          '403':
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          '404':
+            description: Users not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+  /users/{id}:
+      get:
+        tags:
+          - Users
+        summary: Get a user by ID
+        operationId: getUserById
+        security:
+          - bearerAuth: []
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID of the user to retrieve
+            schema:
+              type: string
+              format: uuid
+        responses:
+          '200':
+            description: User retrieved successfully
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UserResponseData'
+          '401':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          '403':
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          '404':
+            description: User not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+      put:
+        tags:
+          - Users
+        summary: Update a user by ID
+        operationId: updateUserById
+        security:
+          - bearerAuth: []
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID of the user to update
+            schema:
+              type: string
+              format: uuid
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserRequest'
+        responses:
+          '200':
+            description: User updated successfully
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UserResponseData'
+          '400':
+            description: Invalid request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          '401':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          '403':
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          '404':
+            description: User not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          '409':
+            description: User already exists
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthenticationErrorResponse'
+          
+
+components:
+  schemas:
+    RegisterUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 32
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+          maxLength: 32
+
+    RegisterUserResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserResponseData'
+
+    UserResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        picture:
+          type: string
+          format: uri
+        firstName:
+          type: string
+        lastName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    AuthenticationErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+          format: int32
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+
+    LoginUserRequest:
+      type: object
+      required:
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 32
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+          maxLength: 32
+
+    LoginUserResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserResponseData'
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 32
+        email:
+          type: string
+          format: email
+        picture:
+          type: string
+          format: uri
+        firstName:
+          type: string
+        lastName:
+          type: string

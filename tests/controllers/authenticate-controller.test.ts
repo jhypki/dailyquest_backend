@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import authenticateController from '../../src/controllers/authenticate-controller';
 import usersService from '../../src/services/users-service';
-import { AuthenticateResponse } from '../../src/types/authenticate-response';
+import { AuthenticateResponse } from '../../src/types/responses/authenticate-response';
 
 describe('Authenticate Controller', () => {
     let req: Partial<Request>;

@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import { UserResponseData } from '../types/user-response-data';
+import { UserResponseData } from '../types/responses/user-response-data';
 
 export const mapUserResponse = (user: User): UserResponseData => {
     return {

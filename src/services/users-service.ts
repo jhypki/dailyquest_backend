@@ -1,5 +1,5 @@
 import usersRepository from '../repositories/users-repository';
-import { AuthenticateResponse } from './../types/authenticate-response';
+import { AuthenticateResponse } from '../types/responses/authenticate-response';
 import { User } from '@prisma/client';
 import { BadRequestError } from '../utils/errors/bad-request-error';
 import { ConflictError } from '../utils/errors/conflict-error';
@@ -9,10 +9,10 @@ import { verifyPassword } from '../utils/authentication-utils/verify-password';
 import { validateLoginData } from '../utils/validations/users/validate-login-data';
 import { validateRegisterData } from '../utils/validations/users/validate-register-data';
 import { ForbiddenError } from '../utils/errors/forbidden-error';
-import { UpdateUserRequest } from '../types/update-user-request';
+import { UpdateUserRequest } from '../types/requests/update-user-request';
 import { validateUpdateUserData } from '../utils/validations/users/validate-update-user-data';
 import { mapUserResponse } from '../mappers/map-user-response';
-import { UserResponseData } from '../types/user-response-data';
+import { UserResponseData } from '../types/responses/user-response-data';
 import statsService from './stats-service';
 
 class UsersService {
@@ -159,6 +159,7 @@ class UsersService {
         if (userId !== idToDelete) {
             throw new ForbiddenError('You are not authorized to delete this user');
         }
+
         return await usersRepository.delete(userId);
     }
 }

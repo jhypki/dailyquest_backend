@@ -1,6 +1,7 @@
 import statsRepository from '../repositories/stats-repository';
 import { Stats } from '@prisma/client';
 import { BadRequestError } from '../utils/errors/bad-request-error';
+import { validateUpdateStatsData } from '../utils/validations/stats/validate-update-stats-data';
 
 class StatsService {
     async createStats(userId: string): Promise<Stats> {
@@ -21,7 +22,9 @@ class StatsService {
     }
 
     async updateStats(userId: string, statsToUpdate: Partial<Stats>): Promise<Stats> {
-        //TODO validate statsToUpdate
+        //TODO call this method when user finishes a task
+        await validateUpdateStatsData(statsToUpdate);
+
         const currentStats = await statsRepository.findByUserId(userId);
         if (!currentStats) {
             throw new BadRequestError('Stats not found');

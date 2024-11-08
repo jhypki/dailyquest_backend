@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { User } from '@prisma/client';
-import { BasicUserData } from '../../types/basic-user-data';
+import { BasicUserData } from '../../types/common/basic-user-data';
 import { JWT_EXPIRATION, JWT_SECRET } from '../../config/constants';
 
 export function generateToken(user: User) {

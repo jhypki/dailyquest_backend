@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import usersService from '../services/users-service';
-import { CustomRequest } from '../types/custom-request';
+import { CustomRequest } from '../types/requests/custom-request';
 import { mapUserUpdateRequest } from '../mappers/map-user-update-request';
 import statsService from '../services/stats-service';
 
@@ -51,15 +51,15 @@ export class UsersController {
             next(error);
         }
     }
-
-    async updateUserStats(req: Request, res: Response, next: NextFunction) {
-        try {
-            const stats = await statsService.updateStats(req.params.id, req.body);
-            res.status(200).json(stats);
-        } catch (error) {
-            next(error);
-        }
-    }
+    //TODO remove this method
+    // async updateUserStats(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         const stats = await statsService.updateStats(req.params.id, req.body);
+    //         res.status(200).json(stats);
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // }
 }
 
 export default new UsersController();

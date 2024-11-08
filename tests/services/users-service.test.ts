@@ -1,5 +1,5 @@
 import usersService from '../../src/services/users-service';
-import { AuthenticateResponse } from '../../src/types/authenticate-response';
+import { AuthenticateResponse } from '../../src/types/responses/authenticate-response';
 import usersRepository from '../../src/repositories/users-repository';
 import { Stats, User } from '@prisma/client';
 import * as generateToken from '../../src/utils/authentication-utils/jwt-utils';

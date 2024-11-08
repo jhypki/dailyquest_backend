@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { UpdateUserRequest } from '../types/update-user-request';
+import { UpdateUserRequest } from '../types/requests/update-user-request';
 
 export const mapUserUpdateRequest = (req: Request): UpdateUserRequest => {
     const requestBody = req.body;
