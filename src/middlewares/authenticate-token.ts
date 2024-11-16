@@ -10,8 +10,6 @@ const authenticateToken = (req: CustomRequest, res: Response, next: NextFunction
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
-    console.log(req.headers);
-
     if (!token) {
         return next(new UnauthorizedError('Authorization token not provided'));
     }
