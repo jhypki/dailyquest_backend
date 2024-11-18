@@ -3,11 +3,11 @@ import { Task, TaskStatus } from '@prisma/client';
 
 class TasksService {
     //TODO return rewards in an object
-    async getTasksForUser(userId: string) {
+    async getTasksForUser(userId: string): Promise<Task[] | null> {
         return tasksRepository.getTasksForUser(userId);
     }
 
-    async createTask(task: Omit<Task, 'id'>, userId: string) {
+    async createTask(task: Omit<Task, 'id'>, userId: string): Promise<Task> {
         return tasksRepository.create({
             ...task,
             userId,
