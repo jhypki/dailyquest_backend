@@ -5,6 +5,7 @@ import { usersRoutes } from './routes/users-routes';
 import errorHandler from './middlewares/error-handler';
 import logger from './middlewares/logger';
 import authenticateToken from './middlewares/authenticate-token';
+import { tasksRoutes } from './routes/tasks-routes';
 
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
@@ -30,6 +31,7 @@ app.use(
 
 app.use('/users', usersRoutes);
 app.use('/authenticate', authenticateRoutes);
+app.use('/tasks', tasksRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({

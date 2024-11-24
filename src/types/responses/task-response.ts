@@ -1,0 +1,24 @@
+export interface TaskResponse {
+    id: string;
+    userId: string;
+    description: string;
+    title: string;
+    category: string;
+    status: string;
+    negativeTask: boolean;
+    createdAt: string;
+    dueDate: string;
+    startDate: string;
+    rewards: Rewards;
+}
+
+interface Rewards {
+    experiencePoints: number;
+    gold: number;
+    strength: number | null;
+    intelligence: number | null;
+    dexterity: number | null;
+    vitality: number | null;
+    charisma: number | null;
+    endurance: number | null;
+}
