@@ -1,19 +1,24 @@
 import tasksRepository from '../repositories/tasks-repository';
 import { Task, TaskStatus } from '@prisma/client';
+import { TaskResponse } from '../types/responses/task-response';
+import { mapTaskResopnse } from '../mappers/map-task-response';
 
 class TasksService {
     //TODO return rewards in an object
-    async getTasksForUser(userId: string): Promise<Task[] | null> {
-        return tasksRepository.getTasksForUser(userId);
+    async getTasksForUser(userId: string): Promise<TaskResponse[] | null> {
+        const tasks = await tasksRepository.getTasksForUser(userId);
+        return tasks ? tasks.map(mapTaskResopnse) : null;
     }
 
-    async createTask(task: Omit<Task, 'id'>, userId: string): Promise<Task> {
-        return tasksRepository.create({
+    async createTask(task: Omit<Task, 'id'>, userId: string): Promise<TaskResponse> {
+        const createdTask = await tasksRepository.create({
             ...task,
             userId,
             status: TaskStatus.pending,
             createdAt: new Date()
         });
+
+        return mapTaskResopnse(createdTask);
     }
 
     async updateTask(taskId: string, task: Task) {
