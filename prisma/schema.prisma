@@ -8,19 +8,21 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  username      String         @unique
-  firstName     String?
-  lastName      String?
-  email         String         @unique
-  passwordHash  String
-  createdAt     DateTime       @default(now())
-  tasks         Task[]
-  events        Event[]
-  stats         Stats?
-  achievements  Achievement[]
-  notifications Notification[]
-  picture       String?
+  id               String           @id @default(uuid())
+  username         String           @unique
+  firstName        String?
+  lastName         String?
+  email            String           @unique
+  passwordHash     String
+  createdAt        DateTime         @default(now())
+  tasks            Task[]
+  events           Event[]
+  stats            Stats?
+  achievements     Achievement[]
+  notifications    Notification[]
+  picture          String?
+  customCategories CustomCategory[]
+  preferences      UserPreferences?
 }
 
 model Stats {
@@ -39,15 +41,16 @@ model Stats {
 }
 
 model Task {
-  id                 String     @id @default(uuid())
-  user               User       @relation(fields: [userId], references: [id])
+  id                 String          @id @default(uuid())
+  user               User            @relation(fields: [userId], references: [id])
   userId             String
   description        String
   title              String
-  category           Category
-  negativeTask       Boolean    @default(false)
-  experiencePoints   Int        @default(0)
-  goldReward         Int        @default(0)
+  category           Category?
+  customCategory     CustomCategory? @relation(fields: [customCategoryId], references: [id])
+  negativeTask       Boolean         @default(false)
+  experiencePoints   Int             @default(0)
+  goldReward         Int             @default(0)
   startDate          DateTime
   dueDate            DateTime
   createdAt          DateTime
@@ -58,6 +61,73 @@ model Task {
   charismaReward     Int?
   enduranceReward    Int?
   dexterityReward    Int?
+  difficulty         Int
+  importance         Int
+  repeatable         Boolean         @default(false)
+  repeatDays         Int?            @default(0)
+  repeatWeeks        Int?            @default(0)
+  repeatMonths       Int?            @default(0)
+  repeatYears        Int?            @default(0)
+  repeatUntil        DateTime?
+  customCategoryId   String?
+  hoursBeforeWarning Int             @default(3)
+  hoursBeforeDue     Int             @default(1)
+}
+
+model CustomCategory {
+  id               String  @id @default(uuid())
+  name             String
+  description      String?
+  user             User    @relation(fields: [userId], references: [id])
+  userId           String
+  strengthRate     Decimal @default(0)
+  intelligenceRate Decimal @default(0)
+  charismaRate     Decimal @default(0)
+  dexterityRate    Decimal @default(0)
+  enduranceRate    Decimal @default(0)
+  color            String
+  Task             Task[]
+}
+
+model UserPreferences {
+  id                 String     @id @default(uuid())
+  user               User       @relation(fields: [userId], references: [id])
+  userId             String     @unique
+  primaryColor       String
+  secondaryColor     String
+  actionButtonsSide  Side
+  actionButtonsSize  Decimal    @default(0.5)
+  theme              Theme
+  language           String     @default("en")
+  timezone           String     @default("UTC")
+  dateFormat         DateFormat @default(YYYY_MM_DD)
+  timeFormat         timeFormat @default(HH_mm)
+  showNotifications  Boolean    @default(true)
+  showAnimations     Boolean    @default(true)
+  hoursBeforeWarning Int        @default(3)
+  hoursBeforeDue     Int        @default(1)
+}
+
+enum DateFormat {
+  YYYY_MM_DD
+  DD_MM_YYYY
+  MM_DD_YYYY
+}
+
+enum timeFormat {
+  HH_mm
+  hh_mm_a
+  HH_mm_ss
+}
+
+enum Theme {
+  light
+  dark
+}
+
+enum Side {
+  left
+  right
 }
 
 model Event {
@@ -96,8 +166,7 @@ model Notification {
 }
 
 enum TaskStatus {
-  pending
-  in_progress
+  incomplete
   completed
   failed
   cancelled
@@ -109,6 +178,8 @@ enum Category {
   social
   household
   personal_development
+  work
+  school
 }
 
 enum NotificationType {
