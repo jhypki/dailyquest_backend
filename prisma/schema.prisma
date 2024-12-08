@@ -37,7 +37,7 @@ model Stats {
   experiencePoints Int      @default(0)
   gold             Int      @default(0)
   lastUpdated      DateTime @default(now())
-  userId           String   @unique // Ensure that each Stats entry is associated with only one User
+  userId           String   @unique
 }
 
 model Task {
