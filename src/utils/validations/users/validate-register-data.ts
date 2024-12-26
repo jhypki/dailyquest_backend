@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { BadRequestError } from '../../errors/bad-request-error';
+import { BadRequestError } from '../../../errors/bad-request-error';
 
 const registerSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),

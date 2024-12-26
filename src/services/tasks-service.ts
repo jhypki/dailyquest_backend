@@ -2,9 +2,9 @@ import tasksRepository from '../repositories/tasks-repository';
 import { Task, TaskStatus } from '@prisma/client';
 import { TaskResponse } from '../types/responses/task-response';
 import { mapTaskResopnse } from '../mappers/map-task-response';
+import { NotFoundError } from '../errors/not-found-error';
 
 class TasksService {
-    //TODO return rewards in an object
     async getTasksForUser(userId: string): Promise<TaskResponse[] | null> {
         const tasks = await tasksRepository.getTasksForUser(userId);
         return tasks ? tasks.map(mapTaskResopnse) : null;
@@ -21,18 +21,18 @@ class TasksService {
         return mapTaskResopnse(createdTask);
     }
 
-    async updateTask(taskId: string, task: Task) {
-        return tasksRepository.update(taskId, task);
+    async updateTask(taskId: string, task: Task): Promise<Task> {
+        return await tasksRepository.update(taskId, task);
     }
 
-    async deleteTask(taskId: string) {
-        return tasksRepository.delete(taskId);
+    async deleteTask(taskId: string): Promise<Task> {
+        return await tasksRepository.delete(taskId);
     }
 
-    async completeTask(taskId: string) {
+    async completeTask(taskId: string): Promise<Task> {
         const task = await tasksRepository.findById(taskId);
         if (!task) {
-            throw new Error('Task not found');
+            throw new NotFoundError('Task not found');
         }
 
         const updatedTask = {
@@ -40,7 +40,7 @@ class TasksService {
             status: TaskStatus.completed
         } as Task;
 
-        return tasksRepository.update(taskId, updatedTask);
+        return await tasksRepository.update(taskId, updatedTask);
     }
 }
 

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { CustomRequest } from '../types/requests/custom-request';
 import { BasicUserData } from '../types/common/basic-user-data';
 import { unless } from 'express-unless';
-import { UnauthorizedError } from '../utils/errors/unauthorized-error';
+import { UnauthorizedError } from '../errors/unauthorized-error';
 import { JWT_SECRET } from '../config/constants';
 
 const authenticateToken = (req: CustomRequest, res: Response, next: NextFunction): void => {

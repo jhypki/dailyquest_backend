@@ -1,6 +1,6 @@
 import { UpdateUserStatsRequest } from '../../../types/requests/update-user-stats-request';
 import * as Yup from 'yup';
-import { BadRequestError } from '../../errors/bad-request-error';
+import { BadRequestError } from '../../../errors/bad-request-error';
 
 const updateUserStatsSchema = Yup.object()
     .shape({
