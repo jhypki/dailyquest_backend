@@ -14,8 +14,6 @@ export const mapTaskResopnse = (task: Task): TaskResponse => {
         dueDate: task.dueDate.toISOString(),
         startDate: task.startDate.toISOString(),
         rewards: {
-            experiencePoints: task.experiencePoints,
-            gold: task.goldReward,
             strength: task.strengthReward,
             intelligence: task.intelligenceReward,
             dexterity: task.dexterityReward,

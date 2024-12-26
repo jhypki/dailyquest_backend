@@ -1,19 +1,21 @@
 import usersRepository from '../repositories/users-repository';
 import { AuthenticateResponse } from '../types/responses/authenticate-response';
 import { User } from '@prisma/client';
-import { BadRequestError } from '../utils/errors/bad-request-error';
-import { ConflictError } from '../utils/errors/conflict-error';
+import { BadRequestError } from '../errors/bad-request-error';
+import { ConflictError } from '../errors/conflict-error';
 import { hashPassword } from '../utils/authentication-utils/hash-password';
 import { generateToken } from '../utils/authentication-utils/jwt-utils';
 import { verifyPassword } from '../utils/authentication-utils/verify-password';
 import { validateLoginData } from '../utils/validations/users/validate-login-data';
 import { validateRegisterData } from '../utils/validations/users/validate-register-data';
-import { ForbiddenError } from '../utils/errors/forbidden-error';
+import { ForbiddenError } from '../errors/forbidden-error';
 import { UpdateUserRequest } from '../types/requests/update-user-request';
 import { validateUpdateUserData } from '../utils/validations/users/validate-update-user-data';
 import { mapUserResponse } from '../mappers/map-user-response';
 import { UserResponseData } from '../types/responses/user-response-data';
 import statsService from './stats-service';
+import { NotFoundError } from '../errors/not-found-error';
+import { InternalServerError } from '../errors/internal-server-error';
 
 class UsersService {
     async getUsers(): Promise<UserResponseData[] | null> {
@@ -26,7 +28,7 @@ class UsersService {
         const user = await usersRepository.findById(userId);
 
         if (!user) {
-            throw new BadRequestError('User not found');
+            throw new NotFoundError('User not found');
         }
 
         return mapUserResponse(user);
@@ -108,7 +110,7 @@ class UsersService {
         const userToUpdate = await usersRepository.findById(userId);
 
         if (!userToUpdate) {
-            throw new BadRequestError('User not found');
+            throw new NotFoundError('User not found');
         }
 
         if (idFromToken !== userId) {
@@ -150,17 +152,16 @@ class UsersService {
         return mapUserResponse(updatedUser);
     }
 
-    async deleteUser(userId: string | undefined, idToDelete: string): Promise<User> {
+    async deleteUser(userId: string | undefined, idToDelete: string): Promise<void> {
         if (!usersRepository.findById(idToDelete)) {
-            throw new BadRequestError('User not found');
+            throw new NotFoundError('User not found');
         }
 
-        //TODO move this to a middleware
-        if (userId !== idToDelete) {
-            throw new ForbiddenError('You are not authorized to delete this user');
+        try {
+            await usersRepository.delete(idToDelete);
+        } catch (error) {
+            throw new InternalServerError('Error deleting user');
         }
-
-        return await usersRepository.delete(userId);
     }
 }
 

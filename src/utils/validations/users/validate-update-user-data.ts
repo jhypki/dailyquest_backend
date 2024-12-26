@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { BadRequestError } from '../../errors/bad-request-error';
+import { BadRequestError } from '../../../errors/bad-request-error';
 import { UpdateUserRequest } from '../../../types/requests/update-user-request';
 
 const updateUserSchema = Yup.object()
