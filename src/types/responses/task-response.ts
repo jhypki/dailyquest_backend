@@ -13,8 +13,6 @@ export interface TaskResponse {
 }
 
 interface Rewards {
-    experiencePoints: number;
-    gold: number;
     strength: number | null;
     intelligence: number | null;
     dexterity: number | null;

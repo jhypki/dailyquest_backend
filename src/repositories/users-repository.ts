@@ -32,10 +32,18 @@ class UsersRepository {
         });
     }
 
-    async delete(userId: string): Promise<User> {
-        return prisma.user.delete({
-            where: { id: userId }
-        });
+    async delete(userId: string): Promise<void> {
+        await prisma.$transaction([
+            prisma.task.deleteMany({
+                where: { userId }
+            }),
+            prisma.stats.delete({
+                where: { userId }
+            }),
+            prisma.user.delete({
+                where: { id: userId }
+            })
+        ]);
     }
 
     async findByUsername(username: string): Promise<User | null> {

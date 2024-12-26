@@ -1,6 +1,6 @@
 import statsRepository from '../repositories/stats-repository';
 import { Stats } from '@prisma/client';
-import { BadRequestError } from '../utils/errors/bad-request-error';
+import { BadRequestError } from '../errors/bad-request-error';
 import { validateUpdateStatsData } from '../utils/validations/stats/validate-update-stats-data';
 
 class StatsService {
