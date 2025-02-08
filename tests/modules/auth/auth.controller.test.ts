@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import authenticateController from '../../src/modules/auth/auth.controller';
-import usersService from '../../src/modules/users/users.service';
-import { AuthResponse } from '../../src/modules/auth/types/auth-response';
+import authenticateController from '../../../src/modules/auth/auth.controller';
+import usersService from '../../../src/modules/users/users.service';
+import { AuthResponse } from '../../../src/modules/auth/types/auth-response';
 
 describe('Authenticate Controller', () => {
     let req: Partial<Request>;
@@ -123,6 +123,7 @@ describe('Authenticate Controller', () => {
         });
 
         it('should call next with an error', async () => {
+            // Arrange
             const error = new Error('Test error');
             usersService.login = jest.fn().mockRejectedValue(error);
 

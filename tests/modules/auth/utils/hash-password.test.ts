@@ -1,4 +1,4 @@
-import { hashPassword } from '../../../src/modules/auth/utils/hash-password';
+import { hashPassword } from '../../../../src/modules/auth/utils/hash-password';
 
 jest.mock('bcrypt', () => ({
     hash: jest.fn().mockResolvedValue('hashedPassword')

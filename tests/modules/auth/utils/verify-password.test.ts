@@ -1,4 +1,4 @@
-import { verifyPassword } from '../../../src/modules/auth/utils/verify-password';
+import { verifyPassword } from '../../../../src/modules/auth/utils/verify-password';
 
 describe('verifyPassword', () => {
     let compareMock: jest.SpyInstance;

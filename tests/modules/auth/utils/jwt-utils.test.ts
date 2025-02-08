@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import { generateToken, verifyToken } from '../../../src/modules/auth/utils/jwt-utils';
+import { generateToken, verifyToken } from '../../../../src/modules/auth/utils/jwt-utils';
 import jwt from 'jsonwebtoken';
 
 describe('JWT Utils', () => {

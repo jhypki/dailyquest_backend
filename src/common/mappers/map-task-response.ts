@@ -11,8 +11,8 @@ export const mapTaskResponse = (task: Task): TaskResponse => {
         status: task.status,
         negativeTask: task.negativeTask,
         createdAt: task.createdAt.toISOString(),
-        dueDate: task.dueDate.toISOString(),
-        startDate: task.startDate.toISOString(),
+        dueDate: task?.dueDate?.toISOString() || undefined,
+        startDate: task?.startDate?.toISOString() || undefined,
         rewards: {
             strength: task.strengthReward,
             intelligence: task.intelligenceReward,

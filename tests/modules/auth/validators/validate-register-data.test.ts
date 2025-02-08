@@ -1,5 +1,5 @@
-import { validateRegisterData } from '../../../src/modules/auth/validators/validate-register-data';
-import { BadRequestError } from '../../../src/utils/errors/bad-request-error';
+import { validateRegisterData } from '../../../../src/modules/auth/validators/validate-register-data';
+import { BadRequestError } from '../../../../src/common/errors/bad-request-error';
 
 describe('validateRegisterData', () => {
     let username: string;

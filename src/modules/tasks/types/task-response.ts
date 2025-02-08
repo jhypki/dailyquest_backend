@@ -7,8 +7,8 @@ export interface TaskResponse {
     status: string;
     negativeTask: boolean;
     createdAt: string;
-    dueDate: string;
-    startDate: string;
+    dueDate?: string;
+    startDate?: string;
     rewards: Rewards;
 }
 

@@ -46,8 +46,8 @@ model Task {
   title              String
   category           Category
   negativeTask       Boolean    @default(false)
-  startDate          DateTime
-  dueDate            DateTime
+  startDate          DateTime?
+  dueDate            DateTime?
   createdAt          DateTime
   status             TaskStatus
   difficulty         Int        @default(1)

@@ -28,8 +28,8 @@ class TasksService {
             status: TaskStatus.pending,
             createdAt: new Date(),
             ...calculatedRewards,
-            startDate: new Date(),
-            dueDate: new Date(task.dueDate)
+            startDate: task.startDate ? new Date(task.startDate) : null,
+            dueDate: task.dueDate ? new Date(task.dueDate) : null
         });
 
         return mapTaskResponse(createdTask);

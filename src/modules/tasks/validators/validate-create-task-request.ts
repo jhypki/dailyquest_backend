@@ -5,7 +5,6 @@ import { BadRequestError } from '../../../common/errors/bad-request-error';
 const createTaskSchema = Yup.object().shape({
     description: Yup.string().required('Description is required'),
     title: Yup.string().required('Title is required'),
-    dueDate: Yup.date().required('Due date is required'),
     category: Yup.string().required('Category is required'),
     negativeTask: Yup.boolean().required('Negative task is required'),
     difficulty: Yup.number().required('Difficulty is required').min(0).max(1)

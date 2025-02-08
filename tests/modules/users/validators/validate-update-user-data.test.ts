@@ -1,6 +1,6 @@
-import { UpdateUserRequest } from '../../../src/modules/users/types/update-user-request';
-import { BadRequestError } from '../../../src/utils/errors/bad-request-error';
-import { validateUpdateUserData } from '../../../src/modules/users/validators/validate-update-user-data';
+import { UpdateUserRequest } from '../../../../src/modules/users/types/update-user-request';
+import { validateUpdateUserData } from '../../../../src/modules/users/validators/validate-update-user-data';
+import { BadRequestError } from '../../../../src/common/errors/bad-request-error';
 
 describe('validateUpdateUserData', () => {
     let data: UpdateUserRequest;
