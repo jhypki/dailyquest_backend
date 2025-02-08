@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import authenticateController from '../../src/controllers/authenticate-controller';
-import usersService from '../../src/services/users-service';
-import { AuthenticateResponse } from '../../src/types/responses/authenticate-response';
+import authenticateController from '../../src/modules/auth/auth.controller';
+import usersService from '../../src/modules/users/users.service';
+import { AuthResponse } from '../../src/modules/auth/types/auth-response';
 
 describe('Authenticate Controller', () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let next: Partial<NextFunction>;
 
-    let correctRegisterResponse: AuthenticateResponse;
-    let correctLoginResponse: AuthenticateResponse;
+    let correctRegisterResponse: AuthResponse;
+    let correctLoginResponse: AuthResponse;
 
     beforeEach(() => {
         jest.resetAllMocks();

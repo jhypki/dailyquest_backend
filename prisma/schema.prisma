@@ -46,18 +46,17 @@ model Task {
   title              String
   category           Category
   negativeTask       Boolean    @default(false)
-  experiencePoints   Int        @default(0)
-  goldReward         Int        @default(0)
   startDate          DateTime
   dueDate            DateTime
   createdAt          DateTime
   status             TaskStatus
+  difficulty         Int        @default(1)
   strengthReward     Int?
   intelligenceReward Int?
   vitalityReward     Int?
   charismaReward     Int?
   enduranceReward    Int?
-  dexterityReward    Int?
+  agilityReward      Int?
 }
 
 model Event {
@@ -130,8 +129,9 @@ enum Category {
   physical
   mental
   social
-  household
+  creative
   personal_development
+  professional
 }
 
 enum NotificationType {

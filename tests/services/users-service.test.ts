@@ -1,15 +1,15 @@
-import usersService from '../../src/services/users-service';
-import { AuthenticateResponse } from '../../src/types/responses/authenticate-response';
-import usersRepository from '../../src/repositories/users-repository';
+import usersService from '../../src/modules/users/users.service';
+import { AuthResponse } from '../../src/modules/auth/types/auth-response';
+import usersRepository from '../../src/modules/users/users.repository';
 import { Stats, User } from '@prisma/client';
-import * as generateToken from '../../src/utils/authentication-utils/jwt-utils';
-import * as hashPassword from '../../src/utils/authentication-utils/hash-password';
-import * as verifyPassword from '../../src/utils/authentication-utils/verify-password';
-import statsService from '../../src/services/stats-service';
+import * as generateToken from '../../src/modules/auth/utils/jwt-utils';
+import * as hashPassword from '../../src/modules/auth/utils/hash-password';
+import * as verifyPassword from '../../src/modules/auth/utils/verify-password';
+import statsService from '../../src/modules/stats/stats.service';
 
 describe('Users Service', () => {
-    let correctRegisterResponse: AuthenticateResponse;
-    let correctLoginResponse: AuthenticateResponse;
+    let correctRegisterResponse: AuthResponse;
+    let correctLoginResponse: AuthResponse;
     let user: User;
     let username: string, email: string, password: string;
     let hashPasswordMock: jest.SpyInstance;

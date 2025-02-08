@@ -1,5 +1,5 @@
-import usersRepository from '../../src/repositories/users-repository';
-import prisma from '../../src/prisma/prisma';
+import usersRepository from '../../src/modules/users/users.repository';
+import prisma from '../../src/config/prisma/prisma';
 import { User } from '@prisma/client';
 
 describe('UsersRepository', () => {
