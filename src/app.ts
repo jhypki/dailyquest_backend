@@ -4,7 +4,6 @@ import { authRoutes } from './modules/auth/auth.routes';
 import { usersRoutes } from './modules/users/users.routes';
 import { tasksRoutes } from './modules/tasks/tasks.routes';
 import errorHandler from './common/middlewares/error-handler';
-import notFoundHandler from './common/middlewares/not-found-handler';
 import authenticateToken from './common/middlewares/authenticate-token';
 import logger from './common/middlewares/logger';
 
