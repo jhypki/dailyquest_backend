@@ -43,7 +43,7 @@ class TasksService {
         return await tasksRepository.delete(taskId);
     }
 
-    async completeTask(taskId: string): Promise<Task> {
+    async completeTask(taskId: string): Promise<TaskResponse> {
         const task = await tasksRepository.findById(taskId);
         if (!task) {
             throw new NotFoundError('Task not found');
@@ -60,7 +60,8 @@ class TasksService {
 
         await statsService.updateStats(updatedTask.userId, mapTaskResponse(updatedTask).rewards as Partial<Stats>);
 
-        return await tasksRepository.update(taskId, updatedTask);
+        const completedTask = await tasksRepository.update(taskId, updatedTask);
+        return mapTaskResponse(completedTask);
     }
 }
 

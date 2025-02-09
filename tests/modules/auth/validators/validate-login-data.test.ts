@@ -45,7 +45,7 @@ describe('validateLoginData', () => {
             error = e as BadRequestError;
         }
 
-        // Act & Assert
+        // Assert
         expect(error).toBeInstanceOf(BadRequestError);
         expect(error!.message).toBe('Invalid login data');
         expect(error!.errors).toHaveLength(1);
@@ -65,7 +65,7 @@ describe('validateLoginData', () => {
             error = e as BadRequestError;
         }
 
-        // Act & Assert
+        // Assert
         expect(error).toBeInstanceOf(BadRequestError);
         expect(error!.message).toBe('Invalid login data');
         expect(error!.errors).toHaveLength(1);
